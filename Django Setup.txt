@@ -1,0 +1,324 @@
+Install Python
+--------------
+https://www.python.org/downloads/
+
+Verificar la version de pyhon
+-----------------------------
+	C:\Users\jarteaga>python --version
+	Python 3.11.3
+
+Verificar la version de PIP
+---------------------------
+	C:\Users\jarteaga>pip --version
+	pip 22.3.1 from C:\Users\jarteaga\AppData\Local\Programs\Python\Python311\Lib\site-packages\pip (python 3.11)
+
+Install Django
+--------------
+	pip install Django==4.2
+
+Verificando Django
+-----------------
+	>>> import django
+	>>> print(django.get_version())
+	4.2
+
+===========================================================================================================================================================
+										Escribiendo su primera aplicación en Django, parte 1
+============================================================================================================================================================
+Verificando Django
+------------------
+	py -m django --version
+	
+Creando un proyecto
+-------------------
+	django-admin startproject smartweldingDev
+		
+	Iniciando el servidor de desarrollo
+	-----------------------------------
+		py manage.py runserver
+		
+	Creando la aplicación encuestas
+	-------------------------------
+			py manage.py startapp juntasDev
+			
+		Escriba su primera vista: juntasDev
+		--------------------------------------------
+		from django.http import HttpResponse
+
+		def index(request):
+			return HttpResponse("Hello, world. You're at the polls index.")
+			
+		Escribir la primera ruta de la aplicacion:juntasDev/urls.py 
+		-----------------------------------------------------------
+			from django.urls import path
+
+			from . import views
+
+			urlpatterns = [
+				path("", views.index, name="index"),
+			]
+			
+Escribir la primera ruta del proyecto: smartweldingDev/urls.py
+--------------------------------------------------------------
+	from django.contrib import admin
+	from django.urls import include, path
+
+	urlpatterns = [
+		path("polls/", include("polls.urls")),
+		path("admin/", admin.site.urls),
+	]		
+
+
+=================================================================================================================================================================
+													PARTE-2 Configuración de la base de datos
+=================================================================================================================================================================
+
+Ahora, abra el archivo del proyecto: mysite/settings.py
+
+Base de datos por defecto:
+-------------------------
+
+	DATABASES = {
+		"default": {
+			"ENGINE": "django.db.backends.sqlite3",
+			"NAME": "mydatabase",
+		}
+	}
+
+
+Base de datos Postgress:
+-----------------------
+	DATABASES = {
+		"default": {
+			# 'ENGINE': 'django.db.backends.sqlite3',
+			# 'NAME': BASE_DIR / 'db.sqlite3',
+			"ENGINE": "django.db.backends.postgresql_psycopg2",
+			"NAME": "juntasDev",
+			"USER": "postgres",
+			"PASSWORD": "Canela123$$",
+			"HOST": "127.0.0.1",
+			"PORT": "5432",
+		}
+	}
+	
+	ENGINE – bien sea 'django.db.backends.sqlite3', 'django.db.backends.postgresql_psycopg2', 'django.db.backends.mysql', o 'django.db.backends.oracle'.
+	Otros backends también están disponibles.
+	
+	NAME – The name of your database. If you’re using SQLite, the database will be a file on your computer; in that case, NAME should be the full absolute
+	path, including filename, of that file. The default value, BASE_DIR / 'db.sqlite3', will store the file in your project directory.	
+	
+	
+	Crear las tablas de las aplicaciones (admin, auth, contentype, sessions, messages, staticfiles) en la base de datos antes de poder utilizarla
+	---------------------------------------------------------------------------------------------------------------------------------------------
+	C:\Users\jarteaga>py manage.py migrate 
+	Nota: El comando migrate solo ejecutará migraciones para aplicaciones en INSTALLED_APPS.
+	
+	
+	
+	Modelos
+	------
+		https://docs.djangoproject.com/es/4.2/topics/db/models/
+	
+	Inidice
+	-------
+		https://docs.djangoproject.com/es/4.2/contents/
+		
+	Como instalar Postgresql en windows
+	-----------------------------------	
+	https://commandprompt.com/education/how-to-download-and-install-postgresql/#:~:text=To%20install%20PostgreSQL%20on%20Windows,to%20begin%20the%20installation%20process.
+	
+	
+	How to Start Django Project with a Database(PostgreSQL)
+	-------------------------------------------------------
+	https://stackpython.medium.com/how-to-start-django-project-with-a-database-postgresql-aaa1d74659d8
+	
+	
+	Conectar PostgreSQL con Django - Tutorial
+	-----------------------------------------
+	https://www.youtube.com/watch?v=RNFrlYO4_6g
+	
+	
+	Django PostgreSQL Connection: 5 Easy Steps
+	------------------------------------------
+		https://hevodata.com/learn/django-postgresql/
+	
+	
+	
+	Instalacion de Postgres
+	-----------------------
+	C:\Program Files\PostgreSQL\15\data
+	summary.installation.directory: C:\Program Files\PostgreSQL\15
+	summary.server.installation.directory: C:\Program Files\PostgreSQL\15
+	summary.data.directory: C:\Program Files\PostgreSQL\15\data
+	summary.database.port: 5432
+	summary.database.superuser: postgres
+	summary.serviceaccount: NT AUTHORITY\NetworkService
+	summary.databaseservice: postgresql-x64-15
+	summary.clt.installation.directory: C:\Program Files\PostgreSQL\15
+	summary.pgadmin.installation.directory: C:\Program Files\PostgreSQL\15\pgAdmin 4
+	summary.sbp.installation.directory: C:\Program Files\PostgreSQL\15
+	summary.installation.logfile: C:\Users\Administrator\AppData\Local\Temp\install-postgresql.log
+	
+	
+	Instalar el conector de PostgreSQL en Django
+	---------------------------------------------
+		PS C:\smartweldingDev>  pip install psycopg2-binary
+		
+		
+		
+		
+	Configuramos el archivo settings.py del proyecto
+ 	------------------------------------------------
+	DATABASES = {
+    'default': {
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": "juntasDev",
+        "USER": "postgres",
+        "PASSWORD": "Canela123$$",
+        "HOST": "127.0.0.1",
+        "PORT": "5432",
+		}
+	}
+		
+		
+	Hacemos las migraciones
+	-----------------------
+		PS C:\smartweldingDev> py manage.py migrate
+		Operations to perform:
+		  Apply all migrations: admin, auth, contenttypes, sessions
+		Running migrations:
+		  Applying contenttypes.0001_initial... OK
+		  Applying auth.0001_initial... OK
+		  Applying admin.0001_initial... OK
+		  Applying admin.0002_logentry_remove_auto_add... OK     
+		  Applying admin.0003_logentry_add_action_flag_choices... OK
+		  Applying contenttypes.0002_remove_content_type_name... OK
+		  Applying auth.0002_alter_permission_name_max_length... OK
+		  Applying auth.0003_alter_user_email_max_length... OK
+		  Applying auth.0004_alter_user_username_opts... OK
+		  Applying auth.0005_alter_user_last_login_null... OK
+		  Applying auth.0006_require_contenttypes_0002... OK
+		  Applying auth.0007_alter_validators_add_error_messages... OK
+		  Applying auth.0008_alter_user_username_max_length... OK
+		  Applying auth.0009_alter_user_last_name_max_length... OK
+		  Applying auth.0010_alter_group_name_max_length... OK
+		  Applying auth.0011_update_proxy_permissions... OK
+		  Applying auth.0012_alter_user_first_name_max_length... OK
+		  Applying sessions.0001_initial... OK
+		
+		
+Creando modelos
+---------------
+	juntasDev/models.py
+	-------------------
+		from django.db import models
+
+		class Question(models.Model):
+			question_text = models.CharField(max_length=200)
+			pub_date = models.DateTimeField("date published")
+
+
+		class Choice(models.Model):
+			question = models.ForeignKey(Question, on_delete=models.CASCADE)
+			choice_text = models.CharField(max_length=200)
+			votes = models.IntegerField(default=0)
+
+Activando los modelos
+---------------------
+	Incluir una referencia a los modelos en la sección de aplicaciones en smartweldingDev/settings.py
+	-------------------------------------------------------------------------------------------------
+		INSTALLED_APPS = [
+		"juntasDev.apps.JuntasdevConfig",
+		"django.contrib.admin",
+		"django.contrib.auth",
+		"django.contrib.contenttypes",
+		"django.contrib.sessions",
+		"django.contrib.messages",
+		"django.contrib.staticfiles",
+		]
+		
+		Ahora Django sabe incluir la aplicación juntasDev
+		-------------------------------------------------
+		PS C:\smartweldingDev> py manage.py makemigrations juntasDev
+		Migrations for 'juntasDev':
+		juntasDev\migrations\0001_initial.py
+    - Create model Question
+    - Create model Choice
+	
+	
+	Vemos las migraciones en: juntasDev/migrations/0001_initial.py
+	--------------------------------------------------------------
+		# Generated by Django 4.2 on 2023-04-28 21:53
+
+		from django.db import migrations, models
+		import django.db.models.deletion
+
+
+		class Migration(migrations.Migration):
+
+			initial = True
+
+			dependencies = [
+			]
+
+			operations = [
+				migrations.CreateModel(
+					name='Question',
+					fields=[
+						('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+						('question_text', models.CharField(max_length=200)),
+						('pub_date', models.DateTimeField(verbose_name='date published')),
+					],
+				),
+				migrations.CreateModel(
+					name='Choice',
+					fields=[
+						('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+						('choice_text', models.CharField(max_length=200)),
+						('votes', models.IntegerField(default=0)),
+						('question', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='juntasDev.question')),
+					],
+				),
+			]
+
+	
+	Ejecutar las migraciones para usted y gestionará el esquema de base de datos automáticamente
+	--------------------------------------------------------------------------------------------
+		PS C:\smartweldingDev> py manage.py sqlmigrate juntasDev  0001
+		BEGIN;
+		--
+		-- Create model Question
+		--
+		CREATE TABLE "juntasDev_question" ("id" bigint NOT NULL PRIMARY KEY GENERATED BY DEFAULT AS IDENTITY, "question_text" varchar(200) NOT NULL, "pub_date" timestamp with time zone NOT NULL);
+		--
+		-- Create model Choice
+		--
+		CREATE TABLE "juntasDev_choice" ("id" bigint NOT NULL PRIMARY KEY GENERATED BY DEFAULT AS IDENTITY, "choice_text" varchar(200) NOT NULL, "votes" integer NOT NULL, "question_id" bigint NOT NULL);
+		ALTER TABLE "juntasDev_choice" ADD CONSTRAINT "juntasDev_choice_question_id_356954d9_fk_juntasDev_question_id" FOREIGN KEY ("question_id") REFERENCES "juntasDev_question" ("id") DEFERRABLE INITIALLY DEFERRED;
+		CREATE INDEX "juntasDev_choice_question_id_356954d9" ON "juntasDev_choice" ("question_id");
+		COMMIT;
+		
+		
+	Revisar cualquier problema en su proyecto sin hacer migraciones o modificar la base de datos.	
+	---------------------------------------------------------------------------------------------
+		PS C:\smartweldingDev> 
+		System check identified no issues (0 silenced).
+		
+	
+	Ejecutar de nuevo el comando migrate para crear esas tablas modelos en su base de datos:
+	----------------------------------------------------------------------------------------	
+	PS C:\smartweldingDev> py manage.py migrate
+	
+		Operations to perform:
+		  Apply all migrations: admin, auth, contenttypes, juntasDev, sessions
+		Running migrations:
+		  Applying juntasDev.0001_initial... OK
+		  
+	https://docs.djangoproject.com/es/4.2/intro/tutorial02/	  
+	
+			
+
+		
+	
